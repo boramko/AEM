@@ -1,5 +1,4 @@
 <!-- this is game test bowling socre Game .. -->
-
 function init() {
   var count = 0;
   var result = 0; // 총값
@@ -37,6 +36,7 @@ function init() {
     var nexttwo = 0; // 다음 프레임 2구값
 
     while (i != 10) {
+
       i++;
       var rest = 0; // 첫번째 값 나머지 가지고 있을꺼임
       one = prompt(i + "번째 프레임의 1번째 구 점수를 입력하세요", "0");
@@ -60,13 +60,13 @@ function init() {
           nextone = one;
         }
       }
-      
-      if (one == 10 && count == 3) { // 첫번째 입력이 10이면서 카운트가 10이면 터키 계산
+
+      if (one == 10 && count == 3) { // 3번 스트라이크시 x1에 결과 뿌려주는역활 
         result += Number(one) + Number(sp1) + Number(nextone);
         totalSum(i - 2);
-          count -=1;
+        count -= 1;
       }
-      
+
       if (one != 10) { //첫번째가 10이 아니라면 2번째 입력!
 
         two = prompt(i + "번째 프레임의 2번째 구 점수를 입력하세요", "0");
@@ -83,20 +83,21 @@ function init() {
       }
     }
 
-    if(i == 10 && count == 2){ //9라운드 계산해주기
-    result += Number(one) + Number(sp1) + Number(nextone);
-    totalSum(i-1);
-    }
-    
-    if (i == 10 && one == 10) {
+    if (i == 10 && one == 10 || count == 2) {
       two = prompt(i + "번째 프레임의 2번째 구 점수를 입력하세요", "0");
       two = errorcheck(two);
       two = undefinedcheck(two, i);
       htmlTableTwo(two, i);
 
+      if (i == 10 && count == 2) { //9라운드 계산해주기
+        result += Number(one) + Number(sp1) + Number(two);
+        totalSum(i - 1);
+      }
+
       result += Number(one) + Number(two);
       totalSum(i);
     }
+
     if (i == 10 && one == 10 || two == 10 || rest == two) {// 10라운드 이면서 첫번째가
       three = prompt(i + "번째 프레임의 3번째 구 점수를 입력하세요", "0");
       three = errorcheck(three);
@@ -105,7 +106,7 @@ function init() {
 
       if (two != 10) { // 첫번째가 10이 이라면 두번째 값과 세번째 값 비교
         rest1 = 10 - Number(two);
-        three = restcheck(rest1,three,i);
+        three = restcheck(rest1, three, i);
       }
 
       var a = i;
@@ -115,8 +116,7 @@ function init() {
 
       var first = one;
       var seceond = two;
-      
-      
+
       if (first == 10 && seceond == 10 && three == 10) {
         result += Number(three);
         totalSum(i);
@@ -130,13 +130,8 @@ function init() {
     }
   }
 
-  
-  
   //컴퓨터 
-  
-  
-  
-  
+
   function com() {
     var flag = false;
     var i = 0;
@@ -172,9 +167,9 @@ function init() {
       if (one == 10 && count == 3) { // 첫번째 입력이 10이면서 카운트가 10이면 터키 계산
         result += Number(one) + Number(sp1) + Number(nextone);
         totalSum(i - 2);
-          count -=1;
+        count -= 1;
       }
-      
+
       if (one != 10) {
         var flag = false;
         two = Math.floor(Math.random() * 11);
@@ -186,16 +181,17 @@ function init() {
           }
         }
         htmlTableTwo(two, i);
-
-        if (count == 1) {
-          strikecheck(count, one, two, nextone, i); // 스트라이크 체크
-          count = 0;
-        } else if (count == 2) {
-          strikecheck(count, one, two, nextone, i); // 스트라이크 체크
-          count = 0;
+      
+        if (i == 10 && count == 2) { //9라운드 계산해주기
+          result += Number(one) + Number(sp1) + Number(two);
+          totalSum(i - 1);
         }
+        
+        if (count >= 1) {
+          strikecheck(count, one, two, nextone, i); // 스트라이크 체크
+          count = 0;
+        } 
         checking(one, two, three, rest, nextone, nexttwo, i); // 일반 계산 처리등
-
       }
     }
     if (i == 10 && one == 10) {
@@ -209,7 +205,7 @@ function init() {
       flag = false;
       three = Math.floor(Math.random() * 11);
       var rest1 = 0;
-      
+
       if (two != 10) { // 첫번째가 10이 이라면 두번째 값과 세번째 값 비교
         while (flag == false) {
           if (three > rest1) {
@@ -372,3 +368,5 @@ function init() {
 function reset() {
   location.reload();
 }
+
+
